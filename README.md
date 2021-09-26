@@ -51,20 +51,20 @@ root@ubuntu1804:/home/ubuntu/openinfralabs/caerus-spark-udf-compiler-from-rapids
 root@ubuntu1804:/home/ubuntu/openinfralabs/caerus-spark-udf-compiler-from-rapids#
 ```
 ### Step 2: Use UDF Compiler Jar
-- spark-submit: see caerus-udf repo for a detail example. See more detail UDF pushdown example in [caerus-udf](https://github.com/open-infrastructure-labs/caerus-udf/tree/master/examples/spark-udf)
+- spark-submit: see caerus-udf repo for a detail example
 ```
  spark-submit 
-  --driver-library-path path-to-udf-compiler-jar\rapids-4-spark-udf_2.12-21.10.0-SNAPSHOT.jar \
+  --driver-class-path  udf-compiler/target/rapids-4-spark-udf_2.12-21.10.0-SNAPSHOT.jar --conf "spark.sql.extensions"="com.nvidia.spark.udf.Plugin"
   --class MyClass path-to-app-jar\main-application.jar
 ```
 - spark-shell (for debugging/testing)
 ```
  spark-shell
-  --driver-library-path path-to-udf-compiler-jar\rapids-4-spark-udf_2.12-21.10.0-SNAPSHOT.jar \
-  --conf "spark.sql.extensions"="com.nvidia.spark.udf.Plugin"
+  --driver-class-path  udf-compiler/target/rapids-4-spark-udf_2.12-21.10.0-SNAPSHOT.jar --conf "spark.sql.extensions"="com.nvidia.spark.udf.Plugin"
+  --config "spark.sql.extensions"="com.nvidia.spark.udf.Plugin"
 ```
 - ide (e.g. Intellij)
-For easy debugging, a main application scala class can be put under udf-compiler/src/main/scala/Main.Scala, inside main class, it will have spark.sql.extensions and a UDF definition, after compile and run (debugging), the physical plan of a sql that calling udf should show different than it was not using UDF compiler (see below result example).
+  For easy debugging, a main application scala class can be put under udf-compiler/src/main/scala/Main.Scala, inside main class, it will have spark.sql.extensions and a UDF definition, after compile and run (debugging), the physical plan of a sql that calling udf should show different than it was not using UDF compiler (see below result example).
 
 ## Result Example
 ```
